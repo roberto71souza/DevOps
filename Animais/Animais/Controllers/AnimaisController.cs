@@ -21,7 +21,7 @@ namespace Animais.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get()
+        public ActionResult<IEnumerable<Animal>> Get()
         {
             var lista = _animalStore.ListarAnimais();
             if (lista.Count > 0)
@@ -48,11 +48,11 @@ namespace Animais.Controllers
         }
 
         [HttpGet("GetAnimalNome/{nome}")]
-        public ActionResult GetAnimalNome(string nome)
+        public ActionResult<IEnumerable<Animal>> GetAnimalNome(string nome)
         {
             if (!string.IsNullOrWhiteSpace(nome))
             {
-                var buscaAnimaisNome = _animalStore.BuscarAnimalNome(nome);
+                var buscaAnimaisNome = _animalStore.BuscarAnimalNome(nome).ToList();
                 if (buscaAnimaisNome.Count() > 0)
                 {
                     return Ok(buscaAnimaisNome);
@@ -75,7 +75,7 @@ namespace Animais.Controllers
 
             if (animal != null)
             {
-                _animalStore.AtualizarAnimal(animal,modelo);
+                _animalStore.AtualizarAnimal(animal, modelo);
                 return Ok("Animal atualizado");
             }
             return NotFound("Animal nao encontrado");
